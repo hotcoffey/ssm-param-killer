@@ -47,3 +47,10 @@ Using the example above, simply entering ```/serverless/lambda-poc``` would hand
 /serverless/lambda-poc/dev1/python
 /serverless/lambda-poc/dev1/javascript
 ```
+
+---
+**NOTE**
+
+Even though the prompt is asking for a path, you can enter a search string (for example `dev1`) and it'll result in the same functionality.
+
+---
