@@ -87,9 +87,4 @@ if __name__ == "__main__":
             print(item)
     kill_list = list(map(str, read_input("-> ", '!', 'Enter paths from above for ssm params you wish to destroy, one per line: ')))
     del_params(kill_list)
-
-
-'''
-read profiles and prompt for user to select the right one
-
-'''
+    
