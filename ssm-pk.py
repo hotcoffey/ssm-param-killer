@@ -1,6 +1,8 @@
 import boto3
+import os
 import string
 import logging
+import argparse
 
 FORMAT_STRING = "%(asctime)s [%(levelname)-9s] [%(filename)s]-[%(lineno)d]  %(message)s"
 logging.basicConfig(level=logging.INFO, format=FORMAT_STRING, datefmt="%m/%d/%Y %I:%M:%S %p")
@@ -9,7 +11,13 @@ LOGGER = logging.getLogger(__file__)
 resources = []
 nexttoken = ''
 
+def linebreak(char):
+    rows, columns = os.popen('stty size', 'r').read().split()
+    print(char*int(columns))
+
 def print_profiles():
+    LOGGER.info('Reading Local AWS Profiles...')
+    linebreak('-')
     for profile in boto3.session.Session().available_profiles:
         print(profile)
 
@@ -44,7 +52,7 @@ def del_params(l):
             response = client.delete_parameter(Name=param)
             LOGGER.info(response)
         except:
-            LOGGER.error(f'Error deleting something.')
+            LOGGER.error(f'Error deleting {param}.')
 
 def build_list(l):
     parampaths = []
@@ -64,9 +72,8 @@ def generate_unique(parampaths):
     return(l)
 
 def read_input(prompt, delimiter, message):
-    print(80*str(delimiter))
+    linebreak(delimiter)
     print(message)
-    print(80*str(delimiter))
     x = input(prompt)
     while x:
         yield x
@@ -74,14 +81,15 @@ def read_input(prompt, delimiter, message):
 
 if __name__ == "__main__":
     print_profiles()
-    profile = list(map(str, read_input("-> ", '!', 'Enter which AWS CLI Profile you wish to use: ')))
+    linebreak('-')
+    profile = input('Enter which AWS CLI Profile you wish to use:\n-> ')
     boto3.session.Session(profile_name=profile[0])
     client = boto3.client('ssm')
     initial_run()
-    print(80*'*')
-    q = (build_list(resources))
-    s = (generate_unique(q))
-    r = sorted(s, key = len)
+    linebreak('*')
+    popped_list = (build_list(resources))
+    unique_list = (generate_unique(popped_list))
+    r = sorted(unique_list, key = len)
     for item in r:
         if len(item) > 0:
             print(item)
