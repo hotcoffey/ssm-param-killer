@@ -2,7 +2,7 @@
 
 ### Purpose
 
-Over the course of your AWS cloud journey SSM Parameters can be left behind and build up over time for one reason or another, especially if you use something like Serverless Framework, Runway, or Stacker and you're stuck having to manually destroy your CloudFormation stacks. The AWS resources are removed, but teh SSM Parameters stick around.
+Over the course of your AWS cloud journey SSM Parameters can be left behind and build up over time for one reason or another, especially if you use something like Serverless Framework, Runway, or Stacker and you're stuck having to manually destroy your CloudFormation stacks. The AWS resources are removed, but the SSM Parameters stick around.
 
 ### Usage
 ```bash
