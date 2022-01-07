@@ -4,7 +4,7 @@
 
 Over the course of your AWS cloud journey SSM Parameters can be left behind and build up over time for one reason or another, especially if you use something like Serverless Framework, Runway, or Stacker and you're stuck having to manually destroy your CloudFormation stacks. The AWS resources are removed, but the SSM Parameters stick around.
 
-
+# USE AT YOUR OWN RISK
 ### Arguments
 | Switch           | Description                                                                | Format | Required |
 | ------------------- | -------------------------------------------------------------------------- | ------ | -------- |
@@ -14,7 +14,9 @@ Over the course of your AWS cloud journey SSM Parameters can be left behind and 
 ---
 **NOTE**
 
-I highly recommend being as specific as possible with the searchstring. You're more than welcome to use something like ```/ccplat``` or ```/waf``` but the script will search and destroy accordingly. It's better to use something like ```/serverless/lambda-poc/dev1``` unless you know what you're doing and you're intentionally trying to do something like blow away everything in ```dev1```.
+I highly recommend using a specific path instead of a search term when it comes to the searchstring. You're more than welcome to use something like ```ccplat``` or ```waf``` but the script will search and destroy accordingly and accross all things in the account, not just things deployed by CCP. 
+
+It's better to use something like ```/serverless/lambda-poc/dev1``` unless you know what you're doing and you're intentionally trying to do something like blow away a namespace or something with a small blast radius like ```dev1```.
 
 ---
 ### Usage Examples
