@@ -8,6 +8,11 @@ FORMAT_STRING = "%(asctime)s [%(levelname)-9s] [%(filename)s]-[%(lineno)d]  %(me
 logging.basicConfig(level=logging.INFO, format=FORMAT_STRING, datefmt="%m/%d/%Y %I:%M:%S %p")
 LOGGER = logging.getLogger(__file__)
 
+parser = argparse.ArgumentParser(description='Uses AWS CLI to find SSM Parameters based on a provided search string and remeove them accordingly.')
+parser.add_argument('-p','--profile', help='Name of the AWS CLI profile you wish to use. Defaults to default.', type=str, required=False)
+parser.add_argument('-s','--searchstring', help='String used to search for parameters you want destroyed. Example: /ccplat/dynamodb/dev0', type=str, required=False)
+args = parser.parse_args()
+
 resources = []
 nexttoken = ''
 
@@ -80,19 +85,25 @@ def read_input(prompt, delimiter, message):
         x = input(prompt)
 
 if __name__ == "__main__":
-    print_profiles()
-    linebreak('-')
-    profile = input('Enter which AWS CLI Profile you wish to use:\n-> ')
-    boto3.session.Session(profile_name=profile[0])
+    if args.profile is None:
+        print_profiles()
+        linebreak('-')
+        profile = input('Enter which AWS CLI Profile you wish to use:\n-> ')
+    else:
+        profile = args.profile
+    boto3.session.Session(profile_name=profile)
     client = boto3.client('ssm')
     initial_run()
     linebreak('*')
     popped_list = (build_list(resources))
     unique_list = (generate_unique(popped_list))
     r = sorted(unique_list, key = len)
-    for item in r:
-        if len(item) > 0:
-            print(item)
-    kill_list = list(map(str, read_input("-> ", '!', 'Enter paths from above for ssm params you wish to destroy, one per line: ')))
-    del_params(kill_list)
+    if args.searchstring:
+        del_params(args.searchstring)
+    else:
+        for item in r:
+            if len(item) > 0:
+                print(item)
+        kill_list = list(map(str, read_input("-> ", '!', 'Enter paths from above for ssm params you wish to destroy, one per line: ')))
+        del_params(kill_list)
     
