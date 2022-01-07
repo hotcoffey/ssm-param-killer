@@ -51,13 +51,19 @@ def del_params(l):
         for item in resources:
             if path in item:
                 kill_list.append(item)
-    for param in kill_list:
-        try:
-            LOGGER.info(f"trying to delete {param} ")
-            response = client.delete_parameter(Name=param)
-            LOGGER.info(response)
-        except:
-            LOGGER.error(f'Error deleting {param}.')
+        linebreak('!')
+        for item in kill_list:
+            print(item)
+        LOGGER.info("The above SSM Parameters will be destroyed.")
+    resp = str.lower(input('Do you wish to continue (y/n):\n-> '))
+    if resp == 'y':
+        for param in kill_list:
+            try:
+                LOGGER.info(f"trying to delete {param} ")
+                response = client.delete_parameter(Name=param)
+                LOGGER.info(response)
+            except:
+                LOGGER.error(f'Error deleting {param}.')
 
 def build_list(l):
     parampaths = []
