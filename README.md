@@ -14,7 +14,7 @@ Over the course of your AWS cloud journey SSM Parameters can be left behind and 
 ---
 **NOTE**
 
-I highly recommend using a specific path instead of a search term when it comes to the searchstring. You're more than welcome to use something like ```ccplat``` or ```waf``` but the script will search and destroy accordingly and accross all things in the account, not just things deployed by CCP. 
+I highly recommend using a specific path instead of a search term when it comes to the searchstring. You're more than welcome to use something like ```s3``` or ```waf``` but the script will search and destroy accordingly and accross all things in the account, not just things deployed by Terraform, Stacker, Serverless, etc. 
 
 It's better to use something like ```/serverless/lambda-poc/dev1``` unless you know what you're doing and you're intentionally trying to do something like blow away a namespace or something with a small blast radius like ```dev1```.
 
@@ -23,7 +23,7 @@ It's better to use something like ```/serverless/lambda-poc/dev1``` unless you k
 ```bash
 python3 ssm-pk.py
 python3 ssm-pk.py --profile=default
-python3 ssm-pk.py --profile=default -s=/ccplat/dynamodb
+python3 ssm-pk.py --profile=default -s=/stacker/dynamodb
 ```
 
 If the ```-p``` or ```--profile``` argument isn't provided, ```ssm-pk.py``` gathers a list of the AWS CLI profiles boto3 can use and allows you to choose which one you want to run the script against, from there it'll grab all SSM Parameters and prompt you with a list of unique paths.
