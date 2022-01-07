@@ -38,9 +38,13 @@ def next_run(token):
 
 def initial_run():
     response = client.describe_parameters(MaxResults=50)
-    for n in range(0,len(response['Parameters'])):
-        resources.append(response['Parameters'][n]['Name'])
-    next_run(response['NextToken'])
+    if len(response['Parameters']) > 0 <=50 and response['NextToken']:
+        for n in range(0,len(response['Parameters'])):
+            resources.append(response['Parameters'][n]['Name'])
+        next_run(response['NextToken'])
+    else:
+        LOGGER.info("No SSM Parameters found.")
+        exit()
 
 def del_params(l):
     '''
